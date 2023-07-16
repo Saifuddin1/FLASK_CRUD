@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <title>CRUD</title>
+    <style>
+        .emoji {font-size: 100px;}
+        .topMargin {margin-top: 100px;}
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .ellipsis {
+        margin: 0 5px;
+    }
+    .page-number {
+        padding: 5px;
+        margin: 5px;
+        border-radius: 5px;
+    }
+
+    .page-number.current {
+        background-color: #0b365e;
+        color: white;
+    }
+
+    .page-number.disabled {
+        color: #ccc;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+        <div class="col-md-3 offset-1 mt-4">
+            <div class="topMargin">
+                <h4 class="alert alert-danger text-center">Enter User Details</h4>
+            </div>
+            <form method="post">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" name = "fname" class="form-control" placeholder="Enter first nane" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" name="lname" class="form-control" placeholder="Enter last name">
+                </div>
+                <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" name="email" class="form-control" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label >Password</label>
+                  <input type="password" name="password" class="form-control" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-success btn-block mt-4"> Create User</button>
+              </form>
+        </div>
+        <div class="col-md-6 topMargin offset-1">
+            <div class="mt-4">
+                <h4 class="alert alert-success text-center"> User Info</h4>
+            </div>
+            {% if all_users %}
+            <div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in all_users %}
+                      <tr>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.password}}</td>
+                        <td>
+                            <a href="{{ url_for('crud_bp.update', user_id=user.id) }}" class="btn btn-info btn-sm fas fa-pencil-alt"></a>
+                            <a href="{{ url_for('crud_bp.delete', user_id=user.id) }}" class="btn btn-danger btn-sm fas fa-trash-alt"></a>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <div class="pagination">
+                    {% if all_users.has_prev %}
+                    
+                    <a href="{{ url_for('crud_bp.index', page=all_users.prev_num) }}">Previous</a>
+                    &nbsp;
+                    {% else %}
+                    <span class="disabled">Previous</span>
+                    &nbsp;
+                    {% endif %}
+                 
+                    {% for num in all_users.iter_pages(left_edge=2, right_edge=2, left_current=1, right_current=1) %}
+                        {% if num %}
+                            {% if all_users.page == num %}
+                                <a href="{{ url_for('crud_bp.index', page=num) }}" class=" page-number current">{{ num }}</a>
+                            {% else %}
+                                <a href="{{ url_for('crud_bp.index', page=num) }}" class="page-number">{{ num }}</a>
+                            {% endif %}
+                        {% else %}
+                            <span class="ellipsis">&#8230;</span>
+                        {% endif %}
+                        &nbsp;
+                    {% endfor %}
+                 
+                    {% if all_users.has_next %}
+                    &nbsp;
+                    <a href="{{ url_for('crud_bp.index', page=all_users.next_num) }}">Next</a>
+                    {% else %}
+                    &nbsp;
+                    <span class="disabled">Next</span>
+                    {% endif %}
+                 </div>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <span class="emoji">&#x1F614;</span>
+                <p class="text-danger">Data not found</p>
+            </div>                            
+            {% endif %}
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
