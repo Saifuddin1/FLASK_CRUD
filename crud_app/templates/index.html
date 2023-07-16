@@ -1,44 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <title>CRUD</title>
-    <style>
-        .emoji {font-size: 100px;}
-        .topMargin {margin-top: 100px;}
-    .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    }
-    .ellipsis {
-        margin: 0 5px;
-    }
-    .page-number {
-        padding: 5px;
-        margin: 5px;
-        border-radius: 5px;
-    }
-
-    .page-number.current {
-        background-color: #0b365e;
-        color: white;
-    }
-
-    .page-number.disabled {
-        color: #ccc;
-    }
-    </style>
-  </head>
-  <body>
+{% extends 'base.html' %}
+{% block title %} {{title}} {% endblock %}
+{% block content %}
     <div class="row">
         <div class="col-md-3 offset-1 mt-4">
             <div class="topMargin">
@@ -98,10 +60,10 @@
                   <div class="pagination">
                     {% if all_users.has_prev %}
                     
-                    <a href="{{ url_for('crud_bp.index', page=all_users.prev_num) }}">Previous</a>
+                    <a href="{{ url_for('crud_bp.index', page=all_users.prev_num) }}" class="h5">«</a>
                     &nbsp;
                     {% else %}
-                    <span class="disabled">Previous</span>
+                    <span class="disabled h5">«</span>
                     &nbsp;
                     {% endif %}
                  
@@ -120,10 +82,10 @@
                  
                     {% if all_users.has_next %}
                     &nbsp;
-                    <a href="{{ url_for('crud_bp.index', page=all_users.next_num) }}">Next</a>
+                    <a href="{{ url_for('crud_bp.index', page=all_users.next_num) }}" class="h5">»</a>
                     {% else %}
                     &nbsp;
-                    <span class="disabled">Next</span>
+                    <span class="disabled h5">»</span>
                     {% endif %}
                  </div>
             </div>
@@ -135,9 +97,4 @@
             {% endif %}
         </div>
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-</html>
+{% endblock %}

@@ -8,7 +8,7 @@ crud_bp = Blueprint("crud_bp", __name__)
 @crud_bp.route("/", methods=['GET', 'POST'])
 def index():
     all_users = User.query.paginate(
-        page=request.args.get('page', 1, type=int), per_page=5, error_out=False)
+        page=request.args.get('page', 1, type=int), per_page=2, error_out=False)
     if request.method == 'POST':
         first_name = request.form.get("fname")
         last_name = request.form.get("lname")
@@ -23,7 +23,8 @@ def index():
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('crud_bp.index'))
-    return render_template("index.html", all_users=all_users)
+    title = "index"
+    return render_template("index.html", all_users=all_users, title=title)
 
 
 @crud_bp.route("/update/<int:user_id>", methods=["GET", "POST"])
@@ -36,8 +37,8 @@ def update(user_id):
         user_to_update.password = request.form.get("password")
         db.session.commit()
         return redirect(url_for('crud_bp.index'))
-
-    return render_template('update.html', user=user_to_update)
+    title = "update"
+    return render_template('update.html', user=user_to_update, title=title)
 
 
 @crud_bp.route("/delete/<int:user_id>", methods=["GET", "POST"])
